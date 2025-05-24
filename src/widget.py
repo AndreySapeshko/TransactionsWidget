@@ -1,14 +1,16 @@
+from src.masks import get_mask_account, get_mask_card_number
+
+
 def mask_account_card(type_card_number: str) -> str:
     ''' Изменяем входящую строку, меняем номер на номер под маской '''
 
-    if type_card_number[:4].lower() == 'счет':
-        from masks import get_mask_account
-        account_mask = type_card_number[:5] + get_mask_account(type_card_number[-20:])
-        return account_mask
+    acc_type, number = type_card_number.rsplit(' ', maxsplit=1)
+    if acc_type.lower() == 'счет':
+        masked_number = get_mask_account(number)
     else:
-        from masks import get_mask_card_number
-        card_mask = type_card_number[:-16] + get_mask_card_number(type_card_number[-16:])
-        return card_mask
+        masked_number = get_mask_card_number(number)
+
+    return f'{acc_type} {masked_number}'
 
 
 def get_date(date_long: str) -> str:
