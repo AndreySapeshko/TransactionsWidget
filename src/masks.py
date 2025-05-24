@@ -1,7 +1,7 @@
 def get_mask_card_number(card_number: str) -> str:
     """получаем номер карты и возвращаем со скрытими цифрами"""
 
-    mask_card_number: str = "".join(list(card_number[:7] + "** **** " + card_number[-4:]))
+    mask_card_number: str = card_number[:4] + ' ' + card_number[4:6] + "** **** " + card_number[-4:]
 
     return mask_card_number
 
