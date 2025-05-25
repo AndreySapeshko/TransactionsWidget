@@ -1,4 +1,4 @@
-def filter_by_state(list_of_dict: list, state: str) -> list:
+def filter_by_state(list_of_dict: list, state: str = 'EXECUTED') -> list:
     ''' выбираем из списка словорей по значению ключа "state" '''
 
     dict_by_state = []
