@@ -9,7 +9,7 @@ def filter_by_state(list_of_dict: list, state: str) -> list:
     return dict_by_state
 
 
-def sort_by_date(list_of_dict: list, reverse=True) -> list:
+def sort_by_date(list_of_dict: list, reverse: bool = True) -> list:
     ''' сортеруем список по дате по убыванию,
     если revers=False, то по возрастанию'''
 
