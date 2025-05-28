@@ -31,9 +31,11 @@ coll_sort = [([{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:2
                {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}]
               )]
 
+
 @pytest.mark.parametrize('list_of_dict, state, expected', coll)
 def test_filter_by_state(list_of_dict: list, state: str, expected: list):
     assert filter_by_state(list_of_dict, state) == expected
+
 
 @pytest.mark.parametrize('list_of_dict, reverse, expected', coll_sort)
 def test_sort_by_date(list_of_dict: list, reverse: bool, expected):
