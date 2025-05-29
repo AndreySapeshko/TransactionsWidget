@@ -1,5 +1,5 @@
 def get_mask_card_number(card_number: str) -> str:
-    """получаем номер карты и возвращаем со скрытими цифрами"""
+    """ получаем номер карты и возвращаем со скрытими цифрами """
 
     mask_card_number: str = card_number[:4] + ' ' + card_number[4:6] + "** **** " + card_number[-4:]
 
@@ -7,7 +7,7 @@ def get_mask_card_number(card_number: str) -> str:
 
 
 def get_mask_account(account: str) -> str:
-    """получаем номер счета возвращаем последние 4 цифры и две *"""
+    """ получаем номер счета возвращаем последние 4 цифры и две * """
 
     mask_account: str = "".join("**" + account[-4:])
 

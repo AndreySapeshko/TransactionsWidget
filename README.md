@@ -13,6 +13,8 @@ git clone https://github.com/AndreySapeshko/TransactionsWidget.git
 ```commandline
 pip install -r requirements.txt
 ```
+## Тестирование:
+
 ## Использование:
 
 ## Документация:
