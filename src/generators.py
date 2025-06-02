@@ -9,3 +9,8 @@ def filter_by_currency(transactions: tuple, currency: str):
             yield transactions[i]
 
 
+def transaction_descriptions(transactions: str):
+    """ генерируем из кортежа транзакций описание """
+
+    for i in range(len(transactions)):
+        yield transactions[i]['description']

@@ -1,7 +1,7 @@
 import pytest
 
 
-from src.generators import filter_by_currency
+from src.generators import filter_by_currency, transaction_descriptions
 
 
 transactions = (
@@ -103,3 +103,9 @@ def test_filter_by_currency():
         }
 
 
+def test_transaction_descriptions():
+    descriptions = transaction_descriptions(transactions)
+    assert next(descriptions) == 'Перевод организации'
+    assert next(descriptions) == 'Перевод со счета на счет'
+    assert next(descriptions) == 'Перевод со счета на счет'
+    assert next(descriptions) == 'Перевод с карты на карту'
