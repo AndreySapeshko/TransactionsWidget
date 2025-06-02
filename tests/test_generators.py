@@ -1,7 +1,4 @@
-import pytest
-
-
-from src.generators import filter_by_currency, transaction_descriptions
+from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
 
 
 transactions = (
@@ -84,28 +81,45 @@ transactions = (
     ]
 )
 
-def test_filter_by_currency():
+
+def test_filter_by_currency() -> None:
     usd_transactions = filter_by_currency(transactions, 'USD')
     assert next(usd_transactions) == {
-            "id": 939719570,
-            "state": "EXECUTED",
-            "date": "2018-06-30T02:08:58.425572",
-            "operationAmount": {
-                "amount": "9824.07",
-                "currency": {
-                    "name": "USD",
-                    "code": "USD"
-                }
-            },
-            "description": "Перевод организации",
-            "from": "Счет 75106830613657916952",
-            "to": "Счет 11776614605963066702"
-        }
+        "id": 939719570,
+        "state": "EXECUTED",
+        "date": "2018-06-30T02:08:58.425572",
+        "operationAmount": {
+            "amount": "9824.07",
+            "currency": {
+                "name": "USD",
+                "code": "USD"
+            }
+        },
+        "description": "Перевод организации",
+        "from": "Счет 75106830613657916952",
+        "to": "Счет 11776614605963066702"
+    }
 
 
-def test_transaction_descriptions():
+def test_transaction_descriptions() -> None:
     descriptions = transaction_descriptions(transactions)
     assert next(descriptions) == 'Перевод организации'
     assert next(descriptions) == 'Перевод со счета на счет'
     assert next(descriptions) == 'Перевод со счета на счет'
     assert next(descriptions) == 'Перевод с карты на карту'
+
+
+card_numbers = [
+    '0000 0000 0000 0001',
+    '0000 0000 0000 0002',
+    '0000 0000 0000 0003',
+    '0000 0000 0000 0004',
+    '0000 0000 0000 0005'
+]
+
+
+def test_card_number_generator() -> None:
+    generator = card_number_generator(1, 5)
+    assert next(generator) in card_numbers
+    assert next(generator) in card_numbers
+    assert next(generator) in card_numbers
