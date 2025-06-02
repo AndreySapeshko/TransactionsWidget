@@ -1,3 +1,6 @@
+import pytest
+
+
 from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
 
 
@@ -82,8 +85,13 @@ transactions = (
 )
 
 
-def test_filter_by_currency() -> None:
-    usd_transactions = filter_by_currency(transactions, 'USD')
+@pytest.fixture
+def coll() -> list:
+    return transactions
+
+
+def test_filter_by_currency(coll: list) -> None:
+    usd_transactions = filter_by_currency(coll, 'USD')
     assert next(usd_transactions) == {
         "id": 939719570,
         "state": "EXECUTED",
@@ -101,8 +109,8 @@ def test_filter_by_currency() -> None:
     }
 
 
-def test_transaction_descriptions() -> None:
-    descriptions = transaction_descriptions(transactions)
+def test_transaction_descriptions(coll: list) -> None:
+    descriptions = transaction_descriptions(coll)
     assert next(descriptions) == 'Перевод организации'
     assert next(descriptions) == 'Перевод со счета на счет'
     assert next(descriptions) == 'Перевод со счета на счет'
@@ -118,8 +126,9 @@ card_numbers = [
 ]
 
 
-def test_card_number_generator() -> None:
-    generator = card_number_generator(1, 5)
-    assert next(generator) in card_numbers
-    assert next(generator) in card_numbers
-    assert next(generator) in card_numbers
+@pytest.mark.parametrize('num_from, num_to, expected', [(1, 5, card_numbers)])
+def test_card_number_generator(num_from: int, num_to: int, expected: list) -> None:
+    generator = card_number_generator(num_from, num_to)
+    assert next(generator) in expected
+    assert next(generator) in expected
+    assert next(generator) in expected
