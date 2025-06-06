@@ -21,14 +21,5 @@ def log(filename: str = ''):
                     with open(filename, 'a', encoding='utf-8') as file:
                         file.write(message_log + '\n')
             return True
-
         return wrapper
     return decorator
-
-
-@log('../data/mylog.txt')
-def some_func(a, b):
-    return a / b
-
-
-some_func(5, 0)
