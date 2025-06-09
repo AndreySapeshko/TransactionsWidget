@@ -15,6 +15,7 @@ pip install -r requirements.txt
 ```
 ## Тестирование:
 Результаты тестирования в папке htmlcov
+1. модуль test_decorators
 
 ## Использование:
 
@@ -23,6 +24,10 @@ pip install -r requirements.txt
 1. функция filter_by_currency
 2. функция transaction_descriptions
 3. функция card_number_generator
+
+### Модуль decorators:
+1. декоратор log записывает в файл или консоль 
+парамеетры и результат работы функции
 
 Примеры использования в модуле test_generators.py
 
