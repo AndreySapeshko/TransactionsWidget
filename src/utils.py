@@ -3,7 +3,7 @@ import os
 import logging
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('utils')
 logger.setLevel(logging.DEBUG)
 file_handler = logging.FileHandler('../logs/utils.log', 'w', encoding='utf-8')
 file_formater = logging.Formatter('%(asctime)s %(name)s %(levelname)s: %(message)s')
