@@ -16,6 +16,8 @@ pip install -r requirements.txt
 ## Тестирование:
 Результаты тестирования в папке htmlcov
 1. модуль test_decorators
+2. модуль test_external_api
+3. модуль test_utils
 
 ## Использование:
 
@@ -28,7 +30,12 @@ pip install -r requirements.txt
 ### Модуль decorators:
 1. декоратор log записывает в файл или консоль 
 парамеетры и результат работы функции
-
 Примеры использования в модуле test_generators.py
+
+### Модуль external_api
+1. функция get_transaction_amount_in_rubles
+
+### Модуль utils
+1. функция converter_from_json
 
 ## Лицензия:
