@@ -1,6 +1,5 @@
 from src.reader import read_from_csv, read_from_xlcx
 
-
 excepted = [{'id': 650703, 'state': 'EXECUTED', 'date': '2023-09-05T11:30:32Z', 'amount': 16210.0,
              'currency_name': 'Sol', 'currency_code': 'PEN', 'from': 'Счет 58803664561298323391',
              'to': 'Счет 39745660563456619397', 'description': 'Перевод организации'},
@@ -24,4 +23,5 @@ def test_read_csv() -> None:
 
 
 def test_read_xlsx() -> None:
-    assert read_from_xlcx('C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/test_transactions_excel.xlsx') == excepted
+    filename = 'C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/test_transactions_excel.xlsx'
+    assert read_from_xlcx(filename) == excepted
