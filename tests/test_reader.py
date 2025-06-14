@@ -3,7 +3,7 @@ import pandas as pd
 import csv
 
 
-from src.reader import read_from_csv
+from src.reader import read_from_csv, read_from_xlcx
 
 
 excepted = [{'id': 650703, 'state': 'EXECUTED', 'date': '2023-09-05T11:30:32Z', 'amount': 16210.0,
@@ -26,3 +26,7 @@ excepted = [{'id': 650703, 'state': 'EXECUTED', 'date': '2023-09-05T11:30:32Z', 
 
 def test_read_csv():
     assert read_from_csv('../data/test_transactions.csv') == excepted
+
+
+def test_read_xlsx():
+    assert read_from_xlcx('../data/test_transactions_excel.xlsx') == excepted
