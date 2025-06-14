@@ -1,6 +1,6 @@
 import pytest
-from src.utils import converter_from_json
 
+from src.utils import converter_from_json
 
 expect = [
     {

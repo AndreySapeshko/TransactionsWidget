@@ -2,7 +2,6 @@ import pytest
 
 from src.decorators import log
 
-
 coll = [
     (5, 1, 'division ok. Result: 5.0. Input: (5, 1), {}'),
     (5, 0, 'erorr: None. Input: (5, 0), {}')

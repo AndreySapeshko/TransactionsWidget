@@ -1,9 +1,8 @@
-import pytest
-
-
-from src.external_api import get_transaction_amount_in_rubles
 from unittest.mock import patch
 
+import pytest
+
+from src.external_api import get_transaction_amount_in_rubles
 
 coll = [
     (
