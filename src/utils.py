@@ -1,7 +1,6 @@
 import json
-import os
 import logging
-
+import os
 
 logger = logging.getLogger('utils')
 logger.setLevel(logging.DEBUG)
