@@ -38,4 +38,6 @@ pip install -r requirements.txt
 ### Модуль utils
 1. функция converter_from_json
 
+### Логирование
+В деректории logs находятся логи по модулям
 ## Лицензия:
