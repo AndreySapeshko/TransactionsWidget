@@ -1,5 +1,7 @@
 import re
 
+from collections import Counter
+
 
 def filter_by_state(list_of_dict: list, state: str = 'EXECUTED') -> list:
     """ выбираем из списка словорей по значению ключа "state" """
@@ -27,3 +29,10 @@ def process_bank_search(transactions:list[dict], search:str)->list[dict]:
         if re.search(search, transaction['description']):
             result.append(transaction)
     return result
+
+
+def process_bank_operations(transactions:list[dict], categories:list)->dict:
+    """ из списка транзакций получаем количество по типам """
+
+    result = [x['state'] for x in transactions]
+    return Counter(result)
