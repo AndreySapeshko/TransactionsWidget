@@ -34,5 +34,5 @@ def process_bank_search(transactions:list[dict], search:str)->list[dict]:
 def process_bank_operations(transactions:list[dict], categories:list)->dict:
     """ из списка транзакций получаем количество по типам """
 
-    result = [x['state'] for x in transactions]
-    return Counter(result)
+    result = [x['state'] for x in transactions if x['state'] in categories]
+    return dict(Counter(result))

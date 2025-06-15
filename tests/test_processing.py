@@ -1,6 +1,6 @@
 import pytest
 
-from src.processing import filter_by_state, sort_by_date, process_bank_search
+from src.processing import filter_by_state, sort_by_date, process_bank_search, process_bank_operations
 
 transactions = [{'id': 650703, 'state': 'EXECUTED', 'date': '2023-09-05T11:30:32Z', 'amount': 16210.0,
                  'currency_name': 'Sol', 'currency_code': 'PEN', 'from': 'Счет 58803664561298323391',
@@ -84,3 +84,8 @@ def test_sort_by_date(list_of_dict: list, reverse: bool, expected):
 def test_process_bank_search(key_result):
     transactions, search, expected = key_result
     assert process_bank_search(transactions, search) == expected
+
+
+def test_process_bank_operations():
+    assert process_bank_operations(transactions,['EXECUTED', 'CANCELED']) == {'EXECUTED': 3, 'CANCELED': 2}
+    assert process_bank_operations(transactions, ['EXECUTED']) == {'EXECUTED': 3}
