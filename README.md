@@ -18,6 +18,7 @@ pip install -r requirements.txt
 1. модуль test_decorators
 2. модуль test_external_api
 3. модуль test_utils
+4. модуль test_reader
 
 ## Использование:
 
@@ -37,6 +38,10 @@ pip install -r requirements.txt
 
 ### Модуль utils
 1. функция converter_from_json
+
+### Модуль reader
+1. Функция read_from_csv
+2. функция read_from_xlcx
 
 ### Логирование
 В деректории logs находятся логи по модулям
