@@ -1,6 +1,8 @@
+import json
+
 from src.utils import converter_from_json
 from src.reader import read_from_csv, read_from_xlcx
-from src.processing import filter_by_state
+from src.processing import filter_by_state, sort_by_date
 
 
 def user_input_validation(expected: list[str], offer: str, max_attempts: int = 0) -> str:
@@ -43,7 +45,7 @@ def main():
         transactions = read_from_csv('data/transactions.csv')
         print('\nДля обработки выбран CSV-файл.')
     elif format == '3':
-        transactions = read_from_xlcx('data/transactions_excel.xlsx')
+        transactions = read_from_xlcx('C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/transactions_excel.xlsx')
         print('\nДля обработки выбран XLSX-файл.')
     elif format.lower() == 'exit':
         print('Работа программы завершена.')
@@ -54,7 +56,19 @@ def main():
     print(suggest_choose_state)
     state = user_input_validation(['EXECUTED', 'CANCELED', 'PENDING'], 'Введите один из трех статусов: ').upper()
     transactions = filter_by_state(transactions, state=state)
-    print(transactions)
+
+    suggest_sort_date = '\nОтсортировать операции по дате? Да/Нет\n'
+    print(suggest_sort_date)
+    sort_date = user_input_validation(['да', 'нет'], 'Введите да или нет: ')
+    if sort_date.lower() == 'да':
+        suggest_select_sort_mode = '\nОтсортировать по возрастанию или по убыванию?\n'
+        print(suggest_select_sort_mode)
+        sort_mode = user_input_validation(['по возрастанию', 'по убыванию'], 'Введите "по возрастанию" или "по убыванию": ')
+        reverse = True
+        if sort_mode.lower() == 'по убыванию':
+            reverse = False
+        transactions = sort_by_date(transactions, reverse=reverse)
+    print(json.dumps(transactions, indent=4))
 
 
 if __name__ == '__main__':
