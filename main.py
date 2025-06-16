@@ -1,8 +1,11 @@
-import json
+import re
+from datetime import datetime
 
 from src.utils import converter_from_json
 from src.reader import read_from_csv, read_from_xlcx
 from src.processing import filter_by_state, sort_by_date
+from src.masks import get_mask_account, get_mask_card_number
+from src.external_api import get_transaction_amount_in_rubles
 
 
 def user_input_validation(expected: list[str], offer: str, max_attempts: int = 0) -> str:
@@ -68,7 +71,55 @@ def main():
         if sort_mode.lower() == 'по убыванию':
             reverse = False
         transactions = sort_by_date(transactions, reverse=reverse)
-    print(json.dumps(transactions, indent=4))
+
+    suggest_choose_currency = '\nВыводить только рублевые транзакции? Да/Нет\n'
+    print(suggest_choose_currency)
+    choose_currency = user_input_validation(['да', 'нет'], 'Введите да или нет: ')
+
+    suggest_choose_description = '\nОтфильтровать список транзакций по определенному слову в описании? Да/Нет\n'
+    print(suggest_choose_description)
+    choose_description = user_input_validation(['да', 'нет'], 'Введите да или нет: ')
+
+
+    print('\nРаспечатываю итоговый список транзакций...\n')
+    print(transactions)
+
+    if len(transactions) == 0:
+        print('Не найдено ни одной транзакции, подходящей под ваши условия фильтрации')
+        return
+
+    print(f'Всего банковских операций в выборке: {len(transactions)}')
+    for transaction in transactions:
+        trans_date = datetime.fromisoformat(transaction['date']).strftime('%d.%m.%Y')
+        description = transaction['description']
+        account_from = transaction['from']
+        account_to = transaction['to']
+        arrow = '->'
+        amount = transaction['amount']
+        name_currency = transaction['currency_name']
+        if account_from is not None:
+            if re.search('счет', account_from.lower()):
+                account_from = get_mask_account(account_from)
+            else:
+                account_from = get_mask_card_number(account_from)
+        else:
+            account_from = ''
+            arrow = ''
+        if account_to is not None:
+            if re.search('счет', account_to.lower()):
+                account_to = get_mask_account(account_to)
+            else:
+                account_to = get_mask_card_number(account_to)
+        else:
+            account_to = ''
+            arrow = ''
+
+
+        if choose_currency.lower() == 'да':
+            amount = get_transaction_amount_in_rubles(transaction)
+            name_currency = 'руб.'
+
+        print(f'\n{trans_date} {description}\n{account_from} {arrow} {account_to}\n{amount} {name_currency}')
 
 
 if __name__ == '__main__':
