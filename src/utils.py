@@ -11,6 +11,27 @@ file_handler.setFormatter(file_formater)
 logger.addHandler(file_handler)
 
 
+def normalize_transaction(transactions: list[dict]) -> list[dict]:
+    """ приводим словари в списке к типу импорта данных из csv/xlcx """
+
+    result = []
+    for transaction in transactions:
+        operation_amount = transaction.get('operationAmount', {})
+        result.append({
+            'id': transaction.get('id'),
+            'state': transaction.get('state'),
+            'date': transaction.get('date'),
+            'amount': operation_amount.get('amount'),
+            'currency_name': operation_amount.get('currency', {}).get('name'),
+            'currency_code': operation_amount.get('currency', {}).get('code'),
+            'description': transaction.get('description'),
+            'from': transaction.get('from'),
+            'to': transaction.get('to')
+        })
+
+    return result
+
+
 def converter_from_json(filename: str) -> list[dict]:
     """ конвертирует json файл в python, если файла нет или пустой вернет пустой список """
 
@@ -28,6 +49,6 @@ def converter_from_json(filename: str) -> list[dict]:
             logger.error(f'произошла ошибка при открытии файла {fnf}')
             return json_data
         if type(data) is list and len(data) != 0:
-            json_data = data
+            json_data = normalize_transaction(data)
         logger.info('конвертация успешно завершена')
     return json_data
