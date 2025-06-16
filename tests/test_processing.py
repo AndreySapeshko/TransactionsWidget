@@ -35,6 +35,7 @@ expected_two = [{'id': 650703, 'state': 'EXECUTED', 'date': '2023-09-05T11:30:32
                  'to': 'Счет 39745660563456619397', 'description': 'Перевод организации'}
                 ]
 
+
 @pytest.fixture(params=[
     (transactions, 'Перевод с карты на карту', expected_one),
     (transactions, 'Перевод организации', expected_two),
@@ -42,6 +43,7 @@ expected_two = [{'id': 650703, 'state': 'EXECUTED', 'date': '2023-09-05T11:30:32
 ])
 def key_result(request):
     return request.param
+
 
 coll = [([{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
           {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'},
@@ -87,5 +89,5 @@ def test_process_bank_search(key_result):
 
 
 def test_process_bank_operations():
-    assert process_bank_operations(transactions,['EXECUTED', 'CANCELED']) == {'EXECUTED': 3, 'CANCELED': 2}
+    assert process_bank_operations(transactions, ['EXECUTED', 'CANCELED']) == {'EXECUTED': 3, 'CANCELED': 2}
     assert process_bank_operations(transactions, ['EXECUTED']) == {'EXECUTED': 3}
