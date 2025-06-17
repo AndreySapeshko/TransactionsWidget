@@ -6,7 +6,7 @@ def read_from_csv(filename: str) -> list[dict]:
 
     df = pd.read_csv(filename, delimiter=';', encoding='utf-8')
     df = df.replace(pd.NA, None)
-    return df.to_dict(orient='records')
+    return [x for x in df.to_dict(orient='records') if x.get('date')]
 
 
 def read_from_xlcx(filename: str) -> list[dict]:
@@ -14,4 +14,4 @@ def read_from_xlcx(filename: str) -> list[dict]:
 
     df = pd.read_excel(filename)
     df = df.replace(pd.NA, None)
-    return df.head().to_dict(orient='records')
+    return [x for x in df.head().to_dict(orient='records') if x.get('date')]

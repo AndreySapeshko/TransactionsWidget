@@ -84,7 +84,7 @@ def sorted_transactions_by_date(transactions: list[dict], suggest_sort_date: str
 def filtered_transactions_by_description(transactions: list[dict], suggest_choose_description: str) -> list[dict]:
     print(suggest_choose_description)
     choose_description = user_input_validation(['да', 'нет'], 'Введите да или нет: ')
-    if choose_description == 'да':
+    if choose_description.lower() == 'да':
         text_description = input('Введите слово или фразу из описания: ')
         transactions = process_bank_search(transactions, text_description)
     return transactions
@@ -146,11 +146,8 @@ def main():
 
     print(f'Всего банковских операций в выборке: {len(transactions)}')
     for transaction in transactions:
-        if len(transaction) == 0:
-            continue
         # Переменные с данными необходимые для вывода
-        if transaction.get('date'):
-            trans_date = datetime.fromisoformat(transaction.get('date')).strftime('%d.%m.%Y')
+        trans_date = datetime.fromisoformat(transaction.get('date')).strftime('%d.%m.%Y')
         description = transaction.get('description')
         account_from = masked_account_card(transaction.get('from'))
         account_to = masked_account_card(transaction.get('to'))

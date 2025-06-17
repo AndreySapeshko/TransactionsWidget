@@ -16,6 +16,8 @@ def normalize_transaction(transactions: list[dict]) -> list[dict]:
 
     result = []
     for transaction in transactions:
+        if len(transaction) == 0:
+            continue
         operation_amount = transaction.get('operationAmount', {})
         result.append({
             'id': transaction.get('id'),
