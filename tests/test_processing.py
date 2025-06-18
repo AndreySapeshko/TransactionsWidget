@@ -1,6 +1,6 @@
 import pytest
 
-from src.processing import filter_by_state, sort_by_date, process_bank_search, process_bank_operations
+from src.processing import filter_by_state, process_bank_operations, process_bank_search, sort_by_date
 
 transactions = [{'id': 650703, 'state': 'EXECUTED', 'date': '2023-09-05T11:30:32Z', 'amount': 16210.0,
                  'currency_name': 'Sol', 'currency_code': 'PEN', 'from': 'Счет 58803664561298323391',

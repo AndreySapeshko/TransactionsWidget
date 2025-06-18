@@ -1,16 +1,14 @@
-import pytest
 import unittest
-from unittest.mock import patch
-from unittest.mock import MagicMock
 from io import StringIO
+from unittest.mock import MagicMock, patch
 
+import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.main import (user_input_validation, greetings_and_import_data,
-                      filtered_transactions_by_state, sorted_transactions_by_date,
-                      filtered_transactions_by_description, masked_account_card, main)
-from src.utils import converter_from_json
+from src.main import (filtered_transactions_by_description, filtered_transactions_by_state, greetings_and_import_data,
+                      main, masked_account_card, sorted_transactions_by_date, user_input_validation)
 from src.reader import read_from_csv, read_from_xlcx
+from src.utils import converter_from_json
 
 expect_executed = [
     {
