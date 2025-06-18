@@ -1,16 +1,13 @@
 import pytest
-import pandas as pd
-import json
 import unittest
 from unittest.mock import patch
-
+from io import StringIO
 
 from src.main import (user_input_validation, greetings_and_import_data,
                       filtered_transactions_by_state, sorted_transactions_by_date,
-                      filtered_transactions_by_description, masked_account_card)
+                      filtered_transactions_by_description, masked_account_card, main)
 from src.utils import converter_from_json
 from src.reader import read_from_csv, read_from_xlcx
-
 
 expect_executed = [
     {
@@ -198,6 +195,7 @@ expect_card = [
     }
 ]
 
+
 @pytest.mark.parametrize('inputs,expected,expected_output', [
     (['3', 'exit'], ['1', '2', '3'], '3'),
     (['invalid', '2', 'exit'], ['1', '2'], '2'),
@@ -236,7 +234,6 @@ class TestSortedTransactionsByDate(unittest.TestCase):
         result = sorted_transactions_by_date(coll, 'Input: ')
         self.assertEqual(result, expect_sort)
 
-
     @patch('src.main.user_input_validation', side_effect=['да', 'да'])
     @patch('builtins.input', side_effect=['Перевод с карты на счет', 'Перевод организации'])
     def test_filtered_transactions_by_description(self, mock_input, mock_user_input):
@@ -252,3 +249,39 @@ class TestSortedTransactionsByDate(unittest.TestCase):
 ])
 def test_masked_account_card(input_number, expected):
     assert masked_account_card(input_number) == expected
+
+
+class TestMain(unittest.TestCase):
+    @patch('src.main.greetings_and_import_data')
+    @patch('src.main.filtered_transactions_by_state')
+    @patch('src.main.sorted_transactions_by_date')
+    @patch('src.main.filtered_transactions_by_description')
+    @patch('src.main.user_input_validation')
+    def test_main(self, mock_user_input, mock_filtered_description,
+                  mock_sorted_date, mock_filtered_state, mock_import_data):
+        mock_import_data.return_value = coll
+        mock_filtered_state.return_value = expect_executed
+        mock_sorted_date.return_value = expect_executed
+        mock_filtered_description.return_value = expect_account
+        mock_user_input.return_value = 'нет'
+        with patch('sys.stdout', new_callable=StringIO) as fake_out:
+            main()
+            output = fake_out.getvalue()
+        expected_output = (
+            '\n'
+            'Выводить только рублевые транзакции? Да/Нет\n'
+            '\n'
+            '\n'
+            'Распечатываю итоговый список транзакций...\n'
+            '\n'
+            'Всего банковских операций в выборке: 2\n'
+            '\n'
+            '26.08.2019 Перевод организации\n'
+            'Maestro 1596 83** **** 5199 -> Счет **9589\n'
+            '31957.58 руб.\n'
+            '\n'
+            '30.06.2018 Перевод организации\n'
+            'Счет **6952 -> Счет **6702\n'
+            '9824.07 USD\n'
+        )
+        self.assertEqual(output, expected_output)
