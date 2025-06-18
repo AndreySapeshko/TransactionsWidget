@@ -1,6 +1,8 @@
 import pytest
 import pandas as pd
 import json
+import unittest
+from unittest.mock import patch
 
 
 from src.main import (user_input_validation, greetings_and_import_data,
@@ -85,6 +87,42 @@ coll = [
     }
 ]
 
+expect_sort = [
+    {
+        "id": 939719570,
+        "state": "EXECUTED",
+        "date": "2018-06-30T02:08:58.425572",
+        "amount": "9824.07",
+        "currency_name": "USD",
+        "currency_code": "USD",
+        "description": "Перевод организации",
+        "from": "Счет 75106830613657916952",
+        "to": "Счет 11776614605963066702"
+    },
+    {
+        "id": 41428829,
+        "state": "CANCELED",
+        "date": "2019-07-03T18:35:29.512364",
+        "amount": "8221.37",
+        "currency_name": "USD",
+        "currency_code": "USD",
+        "description": "Перевод организации",
+        "from": "MasterCard 7158300734726758",
+        "to": "Счет 35383033474447895560"
+    },
+    {
+        "id": 441945886,
+        "state": "EXECUTED",
+        "date": "2019-08-26T10:50:58.294041",
+        "amount": "31957.58",
+        "currency_name": "руб.",
+        "currency_code": "RUB",
+        "description": "Перевод организации",
+        "from": "Maestro 1596837868705199",
+        "to": "Счет 64686473678894779589"
+    }
+]
+
 @pytest.mark.parametrize('inputs,expected,expected_output', [
     (['3', 'exit'], ['1', '2', '3'], '3'),
     (['invalid', '2', 'exit'], ['1', '2'], '2'),
@@ -116,4 +154,9 @@ def test_filtered_transactions_by_state(inputs, expected, expect, monkeypatch):
     assert filtered_transactions_by_state(coll, 'Input: ') == expect
 
 
-
+class TestSortedTransactionsByDate(unittest.TestCase):
+    @patch('src.main.user_input_validation')
+    def test_sorted_transactions_by_date(self, mock_input):
+        mock_input.side_effect = ['да', 'по убыванию']
+        result = sorted_transactions_by_date(coll, 'Input: ')
+        self.assertEqual(result, expect_sort)
