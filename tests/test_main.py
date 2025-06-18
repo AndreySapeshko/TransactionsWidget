@@ -208,9 +208,15 @@ def test_user_input_validation(inputs: list, expected: list, expected_output: st
 
 
 @pytest.mark.parametrize('inputs,expected,expect', [
-    (['0', '1'], ['1', '2', '3'], converter_from_json('../data/operations.json')),
-    (['5', '2'], ['1', '2', '3'], read_from_csv('../data/transactions.csv')),
-    (['4', '8', '3'], ['1', '2', '3'], read_from_xlcx('../data/transactions_excel.xlsx')),
+    (['0', '1'], ['1', '2', '3'], converter_from_json(
+        'C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/operations.json'
+    )),
+    (['5', '2'], ['1', '2', '3'], read_from_csv(
+        'C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/transactions.csv'
+    )),
+    (['4', '8', '3'], ['1', '2', '3'], read_from_xlcx(
+        'C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/transactions_excel.xlsx'
+    )),
     (['9', 'exit'], ['1', '2', '3'], [])
 ])
 def test_greetings_and_import_data(inputs: list, expected: list, expect: list, monkeypatch: MonkeyPatch) -> None:
