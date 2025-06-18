@@ -36,17 +36,17 @@ def greetings_and_import_data(greetings: str) -> list[dict]:
     print(greetings)
     format = user_input_validation(['1', '2', '3'], 'Введите номер пункта: ')
     if format == '1':
-        transactions = converter_from_json('data/operations.json')
+        transactions = converter_from_json('C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/operations.json')
         print('\nДля обработки выбран JSON-файл.')
     elif format == '2':
-        transactions = read_from_csv('data/transactions.csv')
+        transactions = read_from_csv('C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/transactions.csv')
         print('\nДля обработки выбран CSV-файл.')
     elif format == '3':
-        transactions = read_from_xlcx('data/transactions_excel.xlsx')
+        transactions = read_from_xlcx('C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/transactions_excel.xlsx')
         print('\nДля обработки выбран XLSX-файл.')
     elif format.lower() == 'exit':
         print('Работа программы завершена.')
-        return
+        return transactions
     return transactions
 
 
