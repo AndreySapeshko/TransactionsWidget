@@ -23,7 +23,7 @@ def user_input_validation(expected: list[str], offer: str, max_attempts: int = 0
         counter_input += 1
         if counter_input == max_attempts:
             user_input = 'exit'
-            print('Количество допустимых попыток исчерпоно.\n' +
+            print('Количество допустимых попыток исчерпоно.\n'
                   'Если хотите продолжить запустите программу заново')
             break
     return user_input
@@ -36,13 +36,19 @@ def greetings_and_import_data(greetings: str) -> list[dict]:
     print(greetings)
     format = user_input_validation(['1', '2', '3'], 'Введите номер пункта: ')
     if format == '1':
-        transactions = converter_from_json('C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/operations.json')
+        transactions = converter_from_json(
+            'C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/operations.json'
+        )
         print('\nДля обработки выбран JSON-файл.')
     elif format == '2':
-        transactions = read_from_csv('C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/transactions.csv')
+        transactions = read_from_csv(
+            'C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/transactions.csv'
+        )
         print('\nДля обработки выбран CSV-файл.')
     elif format == '3':
-        transactions = read_from_xlcx('C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/transactions_excel.xlsx')
+        transactions = read_from_xlcx(
+            'C:/Users/user/PyCharmStudyProject/TransactionsWidget/data/transactions_excel.xlsx'
+        )
         print('\nДля обработки выбран XLSX-файл.')
     elif format.lower() == 'exit':
         print('Работа программы завершена.')
@@ -104,23 +110,23 @@ def masked_account_card(account_card: str) -> str:
     return account_card
 
 
-def main():
+def main() -> None:
     """ программа загружает данные из файла и выводит в сортированном и отфильтрованном виде
         формат файла и параметры фильтрации и сортировки задает пользователь """
 
     # Приветствие. Получаем данные по выбранному формату.
-    greetings = ('Программа: Привет! Добро пожаловать в программу работы\n' +
-                 ' с банковскими транзакциями.\n' +
-                 'Выберите необходимый пункт меню:\n' +
-                 '1. Получить информацию о транзакциях из JSON-файла\n' +
-                 '2. Получить информацию о транзакциях из CSV-файла\n' +
-                 '3. Получить информацию о транзакциях из XLSX-файла\n ' +
+    greetings = ('Программа: Привет! Добро пожаловать в программу работы\n'
+                 ' с банковскими транзакциями.\n'
+                 'Выберите необходимый пункт меню:\n'
+                 '1. Получить информацию о транзакциях из JSON-файла\n'
+                 '2. Получить информацию о транзакциях из CSV-файла\n'
+                 '3. Получить информацию о транзакциях из XLSX-файла\n '
                  'Для выхода из программы введите "exit".\n')
     transactions = greetings_and_import_data(greetings)
 
     # Фильтруем список по выбранному статусу.
-    suggest_choose_state = ('\nПрограмма: Введите статус, по которому необходимо выполнить фильтрацию.\n' +
-                            'Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n' +
+    suggest_choose_state = ('\nПрограмма: Введите статус, по которому необходимо выполнить фильтрацию.\n'
+                            'Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n'
                             'что бы выбрать все введите пустую строку\n')
     transactions = filtered_transactions_by_state(transactions, suggest_choose_state)
 
@@ -147,7 +153,7 @@ def main():
     print(f'Всего банковских операций в выборке: {len(transactions)}')
     for transaction in transactions:
         # Переменные с данными необходимые для вывода
-        trans_date = datetime.fromisoformat(transaction.get('date')).strftime('%d.%m.%Y')
+        trans_date = datetime.fromisoformat(transaction.get('date', '')).strftime('%d.%m.%Y')
         description = transaction.get('description')
         account_from = masked_account_card(transaction.get('from'))
         account_to = masked_account_card(transaction.get('to'))

@@ -1,10 +1,10 @@
 import os
-
 import requests
+from typing import Union, Any
 from dotenv import load_dotenv
 
 
-def get_transaction_amount_in_rubles(transaction: dict) -> float:
+def get_transaction_amount_in_rubles(transaction: dict) -> Union[float, None, Any]:
     """ из транзакции возвращает сумму в рублях, если сумма на в рублях, конвертирует через apilayer.com """
 
     currency_code = transaction['currency_code']

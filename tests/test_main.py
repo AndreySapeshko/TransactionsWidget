@@ -1,7 +1,10 @@
 import pytest
 import unittest
 from unittest.mock import patch
+from unittest.mock import MagicMock
 from io import StringIO
+
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.main import (user_input_validation, greetings_and_import_data,
                       filtered_transactions_by_state, sorted_transactions_by_date,
@@ -201,7 +204,7 @@ expect_card = [
     (['invalid', '2', 'exit'], ['1', '2'], '2'),
     (['a', 'b', 'exit'], ['1'], 'exit')
 ])
-def test_user_input_validation(inputs, expected, expected_output, monkeypatch):
+def test_user_input_validation(inputs: list, expected: list, expected_output: str, monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr('builtins.input', lambda _: inputs.pop(0))
     assert user_input_validation(expected, 'Введите: ') == expected_output
 
@@ -212,7 +215,7 @@ def test_user_input_validation(inputs, expected, expected_output, monkeypatch):
     (['4', '8', '3'], ['1', '2', '3'], read_from_xlcx('../data/transactions_excel.xlsx')),
     (['9', 'exit'], ['1', '2', '3'], [])
 ])
-def test_greetings_and_import_data(inputs, expected, expect, monkeypatch):
+def test_greetings_and_import_data(inputs: list, expected: list, expect: list, monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr('builtins.input', lambda _: inputs.pop(0))
     assert greetings_and_import_data('Input: ') == expect
 
@@ -222,21 +225,21 @@ def test_greetings_and_import_data(inputs, expected, expect, monkeypatch):
     (['CANCELED'], ['EXECUTED', 'CANCELED', ''], expect_canceled),
     (['123', ''], ['EXECUTED', 'CANCELED', ''], coll)
 ])
-def test_filtered_transactions_by_state(inputs, expected, expect, monkeypatch):
+def test_filtered_transactions_by_state(inputs: list, expected: list, expect: list, monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr('builtins.input', lambda _: inputs.pop(0))
     assert filtered_transactions_by_state(coll, 'Input: ') == expect
 
 
 class TestSortedTransactionsByDate(unittest.TestCase):
     @patch('src.main.user_input_validation')
-    def test_sorted_transactions_by_date(self, mock_input):
+    def test_sorted_transactions_by_date(self, mock_input: MagicMock) -> None:
         mock_input.side_effect = ['да', 'по убыванию']
         result = sorted_transactions_by_date(coll, 'Input: ')
         self.assertEqual(result, expect_sort)
 
     @patch('src.main.user_input_validation', side_effect=['да', 'да'])
     @patch('builtins.input', side_effect=['Перевод с карты на счет', 'Перевод организации'])
-    def test_filtered_transactions_by_description(self, mock_input, mock_user_input):
+    def test_filtered_transactions_by_description(self, mock_input: MagicMock, mock_user_input: MagicMock) -> None:
         result_card = filtered_transactions_by_description(coll_description, 'Input: ')
         result_account = filtered_transactions_by_description(coll_description, 'Input: ')
         self.assertEqual(result_card, expect_card)
@@ -247,7 +250,7 @@ class TestSortedTransactionsByDate(unittest.TestCase):
     ('MasterCard 8826230888662405', 'MasterCard 8826 23** **** 2405'),
     ('Счет 96119739109420349721', 'Счет **9721')
 ])
-def test_masked_account_card(input_number, expected):
+def test_masked_account_card(input_number: str, expected: str) -> None:
     assert masked_account_card(input_number) == expected
 
 
@@ -257,8 +260,9 @@ class TestMain(unittest.TestCase):
     @patch('src.main.sorted_transactions_by_date')
     @patch('src.main.filtered_transactions_by_description')
     @patch('src.main.user_input_validation')
-    def test_main(self, mock_user_input, mock_filtered_description,
-                  mock_sorted_date, mock_filtered_state, mock_import_data):
+    def test_main(self, mock_user_input: MagicMock, mock_filtered_description: MagicMock,
+                  mock_sorted_date: MagicMock, mock_filtered_state: MagicMock,
+                  mock_import_data: MagicMock) -> None:
         mock_import_data.return_value = coll
         mock_filtered_state.return_value = expect_executed
         mock_sorted_date.return_value = expect_executed
