@@ -245,3 +245,10 @@ class TestSortedTransactionsByDate(unittest.TestCase):
         self.assertEqual(result_card, expect_card)
         self.assertEqual(result_account, expect_account)
 
+
+@pytest.mark.parametrize('input_number, expected', [
+    ('MasterCard 8826230888662405', 'MasterCard 8826 23** **** 2405'),
+    ('Счет 96119739109420349721', 'Счет **9721')
+])
+def test_masked_account_card(input_number, expected):
+    assert masked_account_card(input_number) == expected
